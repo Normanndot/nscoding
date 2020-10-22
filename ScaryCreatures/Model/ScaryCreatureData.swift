@@ -28,7 +28,23 @@
 
 import Foundation
 
-class ScaryCreatureData: NSObject {
+enum Keys: String {
+  case title = "Title"
+  case rating = "Rating"
+}
+
+class ScaryCreatureData: NSObject, NSCoding {
+  func encode(with coder: NSCoder) {
+    coder.encode(title, forKey: Keys.title.rawValue)
+    coder.encode(rating, forKey: Keys.rating.rawValue)
+  }
+
+  required convenience init?(coder: NSCoder) {
+    let title = coder.decodeObject(forKey: Keys.title.rawValue) as! String
+    let rating = coder.decodeFloat(forKey: Keys.rating.rawValue)
+    self.init(title: title, rating: rating)
+  }
+
   var title = ""
   var rating: Float = 0
   
